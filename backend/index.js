@@ -1,18 +1,38 @@
 import express from 'express';
+import mongoose from 'mongoose';
+import { config } from 'dotenv';
+config();
 
 const app = express();
-let PORT 
+const PORT = process.env.PORT;
+
+/* Middlewares */ 
+app.use(express.json());
 
 /* Routes */
-app.get('/', (req, res) => {
-  res.status(200).json("hello")
-})
 
-app.listen(PORT = 4000, () => {
-  console.log(`App is running on http://localhost:${PORT}`);
-});
 
+
+/* Connect to Database */
+const connect = async () => {
+  await mongoose.connect(process.env.MDB_CONNECT);
+  try {
+    app.listen(PORT, () => {
+      console.log(`App is running on http://localhost:${PORT}`);
+    });
+
+    console.log(`Connected to Database`)
+  }
+  catch (err) {
+     console.error(`Error connecting to database: ${err.message}`);
+     throw new Error(`Error connecting to database: ${err.message}`);
+  }
+}
+
+connect();
+
+/* Error Handling */ 
 app.use((err, req, res, next) => {
-  console.error({msg: err.msg});
-  res.status(500).send({msg: err.message});
+  console.error({ msg: err.msg });
+  res.status(500).send({ msg: err.message });
 });
