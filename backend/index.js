@@ -10,10 +10,10 @@ const PORT = process.env.PORT;
 app.use(express.json());
 
 /* Import routes */
-import { workoutRoute } from './routes/workoutRoute.js';
+import { workoutRoutes } from './routes/workoutRoute.js';
 
 /* Routes */
-app.use('/api/workout', workoutRoute);
+app.use('/api/workout', workoutRoutes);
 
 
 /* Connect to Database */
@@ -36,6 +36,6 @@ connect();
 
 /* Error Handling */
 app.use((err, req, res, next) => {
-  console.error({ msg: err.msg });
+  console.error({ msg: err.message });
   res.status(500).send({ msg: err.message });
 });
