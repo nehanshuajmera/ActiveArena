@@ -16,7 +16,7 @@ export const getworkout = async (req, res) => {
   const { id } = req.params;
   try {
     if (!mongoose.Types.ObjectId.isValid(id)) {
-      res.status(404).json({
+      res.status(400).json({
         error: "The resource you're trying to access is not available",
       });
     }
@@ -54,7 +54,7 @@ export const deleteWorkout = async (req, res) => {
   const { id } = req.params;
   try {
     if (!mongoose.Types.ObjectId.isValid(id)) {
-      res.status(404).json({
+      res.status(400).json({
         error: "The resource you're trying to access is not available",
       });
     }
@@ -77,7 +77,7 @@ export const updateWorkout = async (req, res) => {
   const { id } = req.params;
   try {
     if (!mongoose.Types.ObjectId.isValid(id)) {
-      res.status(404).json({
+      res.status(400).json({
         error: "The resource you're trying to access is not available",
       });
     }
@@ -86,6 +86,9 @@ export const updateWorkout = async (req, res) => {
       { _id: id },
       {
         ...req.body,
+      },
+      {
+        new: true,
       }
     );
 
