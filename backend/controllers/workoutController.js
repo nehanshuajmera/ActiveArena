@@ -11,7 +11,18 @@ export const getWorkouts = async (req, res) => {
 };
 
 export const getworkout = async (req, res) => {
-  res.status(200).json({ msg: "get single workout" });
+  try {
+    const { id } = req.params;
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      res
+        .status(404)
+        .send("The resourse you're trying to access is not available");
+    }
+    const workout = await Workout.findById(id);
+    res.status(200).json(workout);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
 };
 
 export const postWorkout = async (req, res) => {
