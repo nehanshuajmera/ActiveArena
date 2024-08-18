@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import { Workout } from "../models/workoutModel.js";
 
+/* get all workouts */
 export const getWorkouts = async (req, res) => {
   try {
     const allWorkouts = await Workout.find();
@@ -10,21 +11,31 @@ export const getWorkouts = async (req, res) => {
   }
 };
 
+/* get single workouts */
 export const getworkout = async (req, res) => {
   try {
     const { id } = req.params;
+
     if (!mongoose.Types.ObjectId.isValid(id)) {
       res
         .status(404)
         .send("The resourse you're trying to access is not available");
     }
+
     const workout = await Workout.findById(id);
+
+    if (!workout) {
+      res.status(404).json({
+        error: "The resource you're trying to access is not available",
+      });
+    }
     res.status(200).json(workout);
   } catch (err) {
     res.status(400).json({ error: err.message });
   }
 };
 
+/* post a workout */
 export const postWorkout = async (req, res) => {
   const { title, reps, load } = req.body;
   try {
@@ -39,10 +50,30 @@ export const postWorkout = async (req, res) => {
   }
 };
 
+/* delete a workout */
 export const deleteWorkout = async (req, res) => {
-  res.status(200).json({ msg: "delete workout" });
+  const { id } = req.params;
+  try {
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      res
+        .status(404)
+        .send("The resource you're trying to access is not available");
+    }
+
+    const deleteWorkout = await Workout.findByIdAndDelete(id);
+
+    if (!deleteWorkout) {
+      res.status(404).json({
+        error: "The resource you're trying to access is not available",
+      });
+    }
+    res.status(200).json(deleteWorkout);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
 };
 
+/* update a workout */
 export const updateWorkout = async (req, res) => {
   res.status(200).json({ msg: "update workout" });
 };
