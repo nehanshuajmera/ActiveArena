@@ -13,13 +13,12 @@ export const getWorkouts = async (req, res) => {
 
 /* get single workouts */
 export const getworkout = async (req, res) => {
+  const { id } = req.params;
   try {
-    const { id } = req.params;
-
     if (!mongoose.Types.ObjectId.isValid(id)) {
-      res
-        .status(404)
-        .send("The resourse you're trying to access is not available");
+      res.status(404).json({
+        error: "The resource you're trying to access is not available",
+      });
     }
 
     const workout = await Workout.findById(id);
@@ -55,12 +54,12 @@ export const deleteWorkout = async (req, res) => {
   const { id } = req.params;
   try {
     if (!mongoose.Types.ObjectId.isValid(id)) {
-      res
-        .status(404)
-        .send("The resource you're trying to access is not available");
+      res.status(404).json({
+        error: "The resource you're trying to access is not available",
+      });
     }
 
-    const deleteWorkout = await Workout.findByIdAndDelete(id);
+    const deleteWorkout = await Workout.findByIdAndDelete({ _id: id });
 
     if (!deleteWorkout) {
       res.status(404).json({
@@ -75,5 +74,28 @@ export const deleteWorkout = async (req, res) => {
 
 /* update a workout */
 export const updateWorkout = async (req, res) => {
-  res.status(200).json({ msg: "update workout" });
+  const { id } = req.params;
+  try {
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      res.status(404).json({
+        error: "The resource you're trying to access is not available",
+      });
+    }
+
+    const updateWorkout = await Workout.findByIdAndUpdate(
+      { _id: id },
+      {
+        ...req.body,
+      }
+    );
+
+    if (!updateWorkout) {
+      res.status(404).json({
+        error: "The resource you're trying to access is not available",
+      });
+    }
+    res.status(200).json(updateWorkout);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
 };
