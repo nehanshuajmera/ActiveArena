@@ -1,0 +1,22 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nehanshuajmera/ActiveArena.git"
+  },
+  "keywords": [
+    "MERN"
+  ],
+  "author": "Nehanshu Ajmera",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nehanshuajmera/ActiveArena/issues"
+  },
+  "homepage": "https://github.com/nehanshuajmera/ActiveArena#readme",
+  "description": ""
+}
